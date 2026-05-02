@@ -48,16 +48,33 @@ document.addEventListener('DOMContentLoaded', () => {
         appearOnScroll.observe(el);
     });
 
-    // 4. Mobile Menu Toggle (Basic setup)
+    // 4. Mobile Menu Toggle
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
-    
-    if(hamburger) {
+    const hamburgerIcon = hamburger ? hamburger.querySelector('i') : null;
+
+    if (hamburger && navLinks) {
         hamburger.addEventListener('click', () => {
-            // In a complete implementation, this would toggle a mobile menu class
-            // For now, it provides visual feedback
-            hamburger.classList.toggle('active');
-            alert('Mobile menu toggled! (Add a dedicated mobile menu component for full functionality)');
+            const isOpen = navbar.classList.toggle('nav-open');
+            if (hamburgerIcon) {
+                hamburgerIcon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
+            }
+        });
+
+        // Close menu when a nav link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navbar.classList.remove('nav-open');
+                if (hamburgerIcon) hamburgerIcon.className = 'fas fa-bars';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navbar.contains(e.target)) {
+                navbar.classList.remove('nav-open');
+                if (hamburgerIcon) hamburgerIcon.className = 'fas fa-bars';
+            }
         });
     }
 });
